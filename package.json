@@ -6,6 +6,7 @@
     "services/*"
   ],
   "scripts": {
-    "start": "npm run start --w shop & npm run start --w admin & npm run start --w host"
+    "start": "npm run start --w shop & npm run start --w admin & npm run start --w host",
+    "build": "npm run build:prod --w shop & npm run build:prod --w admin & npm run build:prod --w host"
   }
 }
