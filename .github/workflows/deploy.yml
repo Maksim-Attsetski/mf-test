@@ -4,10 +4,6 @@ on:
   push:
     branches:
       - main
-  paths:
-    - 'services/host/**'
-    - 'services/shop/**'
-    - 'services/admin/**'
 
 jobs:
   deploy:
@@ -23,11 +19,22 @@ jobs:
           node-version: 18
           cache: 'npm'
 
+      - name: Check if service was modified
+        id: changes
+        run: |
+          git fetch origin main --depth=1
+          if git diff --quiet origin/main -- services/${{ matrix.service }}; then
+            echo "skip=true" >> $GITHUB_ENV
+          fi
+
       - name: Install dependencies
+        if: env.skip != 'true'
         run: npm install
 
       - name: Build
+        if: env.skip != 'true'
         run: npm run build --workspace=services/${{ matrix.service }}
 
       - name: Deploy to Onrender
+        if: env.skip != 'true'
         run: curl -X POST ${{ secrets.RENDER_DEPLOY_URL_${{ matrix.service }} }}
