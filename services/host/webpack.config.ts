@@ -8,6 +8,9 @@ import {
   BuildOptions,
 } from '@packages/build-config';
 import packageJson from './package.json';
+import { config } from 'dotenv';
+
+config({ path: path.resolve(__dirname, '../../.env') });
 
 interface EnvVariables {
   mode?: BuildMode;
@@ -26,8 +29,14 @@ export default (env: EnvVariables) => {
     public: path.resolve(__dirname, 'public'),
     src: path.resolve(__dirname, 'src'),
   };
-  const SHOP_REMOTE_URL = env.SHOP_REMOTE_URL ?? 'http://localhost:3001';
-  const ADMIN_REMOTE_URL = env.ADMIN_REMOTE_URL ?? 'http://localhost:3002';
+  const SHOP_REMOTE_URL =
+    env.SHOP_REMOTE_URL ??
+    process.env.SHOP_REMOTE_URL ??
+    'http://localhost:3001';
+  const ADMIN_REMOTE_URL =
+    env.ADMIN_REMOTE_URL ??
+    process.env.ADMIN_REMOTE_URL ??
+    'http://localhost:3002';
 
   console.log('urls', SHOP_REMOTE_URL, ADMIN_REMOTE_URL);
 

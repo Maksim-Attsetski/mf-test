@@ -1,3 +1,6 @@
 /node_modules
 /packages/build-config/node_modules
 /services/*/build
+
+.env
+.env.dev
